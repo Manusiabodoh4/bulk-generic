@@ -36,13 +36,13 @@ func (h *UserPostgresImpl) InsertOne(ctx context.Context, data *models.Users) <-
 	return output
 
 }
-func (h *UserPostgresImpl) UpdateOneWithID(ctx context.Context, ID string, data *models.Users) <-chan entity.TemplateChannelResponse {
+func (h *UserPostgresImpl) UpdateOneWithID(ctx context.Context, data *models.Users) <-chan entity.TemplateChannelResponse {
 
 	output := make(chan entity.TemplateChannelResponse)
 
 	go func() {
 		defer close(output)
-		result := h.db.Table(h.table).Where("id = ?", ID).Updates(map[string]interface{}{
+		result := h.db.Table(h.table).Where("id = ?", data.ID).Updates(map[string]interface{}{
 			"host":     data.Host,
 			"username": data.Username,
 			"password": data.Password,

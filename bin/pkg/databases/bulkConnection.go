@@ -6,28 +6,28 @@ import (
 )
 
 type BulkConnectionPkg struct {
-	connection entity.BulkConnection
+	Connection entity.BulkConnection
 }
 
 var obj BulkConnectionPkg
 
 func InitBulkConnectionPkg() *BulkConnectionPkg {
-	if obj.connection.Sql == nil {
+	if obj.Connection.Sql == nil {
 		obj = BulkConnectionPkg{}
-		obj.connection.Sql = make(map[string]*gorm.DB)
+		obj.Connection.Sql = make(map[string]*gorm.DB)
 	}
 	return &obj
 }
 
 func (h *BulkConnectionPkg) AddBulkConnection(prop string, value *gorm.DB) bool {
-	if _, ok := h.connection.Sql[prop]; ok {
+	if _, ok := h.Connection.Sql[prop]; ok {
 		return false
 	}
-	h.connection.Sql[prop] = value
+	h.Connection.Sql[prop] = value
 	return true
 }
 
 func (h *BulkConnectionPkg) GetBulkConnection(prop string) (bool, *gorm.DB) {
-	val, ok := h.connection.Sql[prop]
+	val, ok := h.Connection.Sql[prop]
 	return ok, val
 }

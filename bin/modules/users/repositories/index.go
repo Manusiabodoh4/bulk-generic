@@ -9,7 +9,7 @@ import (
 
 type UserPostgres interface {
 	InsertOne(ctx context.Context, data *models.Users) <-chan entity.TemplateChannelResponse
-	UpdateOneWithID(ctx context.Context, ID string, data *models.Users) <-chan entity.TemplateChannelResponse
+	UpdateOneWithID(ctx context.Context, data *models.Users) <-chan entity.TemplateChannelResponse
 	FindOne(ctx context.Context, query string, parameter map[string]interface{}) <-chan entity.TemplateChannelResponse
 	FindAll(ctx context.Context) <-chan entity.TemplateChannelResponse
 }

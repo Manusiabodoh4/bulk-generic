@@ -11,5 +11,5 @@ type UsecaseUsers interface {
 	SetupConnection(ctx context.Context) entity.TemplateChannelResponse
 	Register(ctx context.Context, data *models.RegisterRequest) entity.TemplateChannelResponse
 	GetDetailWithID(ctx context.Context, data *models.GetDetailRequest) entity.TemplateChannelResponse
-	UpdateUsers(ctx context.Context, data *models.UpdateUsersRequest) entity.TemplateChannelResponse
+	UpdateUsers(ctx context.Context, id string, data *models.UpdateUsersRequest) entity.TemplateChannelResponse
 }
