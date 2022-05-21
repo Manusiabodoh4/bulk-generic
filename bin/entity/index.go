@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type TemplateResponse struct {
 	Status  int         `json:"status"`
-	Message string      `json:"message"`
+	Message interface{} `json:"message"`
 	Data    interface{} `json:"data"`
 }
 

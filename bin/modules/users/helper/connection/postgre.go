@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateConnectionPostgre(ctx context.Context, data *models.RegisterRequest) *gorm.DB {
+func CreateConnectionPostgre(ctx context.Context, data *models.Users) *gorm.DB {
 
 	connection := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s",
 		data.Host, data.Username, data.Password, data.Dbname, data.Port, "disable")

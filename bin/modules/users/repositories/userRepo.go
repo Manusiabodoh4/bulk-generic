@@ -43,6 +43,7 @@ func (h *UserPostgresImpl) UpdateOneWithID(ctx context.Context, data *models.Use
 	go func() {
 		defer close(output)
 		result := h.db.Table(h.table).Where("id = ?", data.ID).Updates(map[string]interface{}{
+			"tipe":     data.Tipe,
 			"host":     data.Host,
 			"username": data.Username,
 			"password": data.Password,

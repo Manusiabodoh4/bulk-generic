@@ -11,9 +11,12 @@ var listFunc map[string]interface{}
 
 //add all function connection in helper
 func NewCreateConnectionHelper() {
+	if listFunc == nil {
+		listFunc = make(map[string]interface{})
+	}
 	listFunc["pgsql"] = CreateConnectionPostgre
 }
 
-func CreateConnectionSQL(ctx context.Context, data *models.RegisterRequest) *gorm.DB {
-	return listFunc[data.Tipe].(func(context.Context, *models.RegisterRequest) *gorm.DB)(ctx, data)
+func CreateConnectionSQL(ctx context.Context, data *models.Users) *gorm.DB {
+	return listFunc[data.Tipe].(func(context.Context, *models.Users) *gorm.DB)(ctx, data)
 }

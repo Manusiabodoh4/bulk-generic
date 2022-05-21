@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Manusiabodoh4/bulk-generic/bin/entity"
 	helper "github.com/Manusiabodoh4/bulk-generic/bin/modules/users/helper/connection"
@@ -34,17 +35,8 @@ func (h *UsecaseUsersImpl) SetupConnection(ctx context.Context) entity.TemplateC
 	if total := len(resUsers); total <= 0 {
 		return result
 	}
-	var tmpModel models.RegisterRequest
 	for _, itemUser := range resUsers {
-		tmpModel = models.RegisterRequest{
-			Tipe:     "pgsql",
-			Host:     itemUser.Host,
-			Username: itemUser.Username,
-			Password: itemUser.Password,
-			Port:     itemUser.Port,
-			Dbname:   itemUser.Dbname,
-		}
-		h.bulkConnection.AddBulkConnection(itemUser.ID, helper.CreateConnectionSQL(ctx, &tmpModel))
+		h.bulkConnection.AddBulkConnection(itemUser.ID, helper.CreateConnectionSQL(ctx, &itemUser))
 	}
 	result.Data = map[string]interface{}{
 		"users":      resUsers,
@@ -63,6 +55,7 @@ func (h *UsecaseUsersImpl) Register(ctx context.Context, data *models.RegisterRe
 	userID = uuid.New().String()
 	tmpModelUser = models.Users{
 		ID:       userID,
+		Tipe:     data.Tipe,
 		Host:     data.Host,
 		Username: data.Username,
 		Password: data.Password,
@@ -72,6 +65,11 @@ func (h *UsecaseUsersImpl) Register(ctx context.Context, data *models.RegisterRe
 	queryRes := <-h.userRepo.InsertOne(ctx, &tmpModelUser)
 	if queryRes.Error != nil {
 		result.Error = queryRes.Error
+		return result
+	}
+	sta := h.bulkConnection.AddBulkConnection(tmpModelUser.ID, helper.CreateConnectionSQL(ctx, &tmpModelUser))
+	if !sta {
+		result.Error = errors.New("cannot add connection to bulk manager connection")
 		return result
 	}
 	result.Data = queryRes.Data
@@ -101,6 +99,7 @@ func (h *UsecaseUsersImpl) UpdateUsers(ctx context.Context, id string, data *mod
 
 	userModel = models.Users{
 		ID:       id,
+		Tipe:     data.Tipe,
 		Host:     data.Host,
 		Username: data.Username,
 		Password: data.Password,

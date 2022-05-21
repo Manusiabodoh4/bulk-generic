@@ -21,7 +21,7 @@ func NewToolsLogger() ToolsLogger {
 func (st *ToolsLoggerImpl) LoggerError(c echo.Context) {
 	message := recover()
 	if message != nil {
-		st.Response.SenderResponseJSON(c, http.StatusInternalServerError, "Server Error", nil)
+		st.Response.SenderResponseJSON(c, http.StatusInternalServerError, message, nil)
 		c.Logger().Error(message)
 	}
 }

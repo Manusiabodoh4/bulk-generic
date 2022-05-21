@@ -6,7 +6,7 @@ import (
 )
 
 type ToolsResponse interface {
-	SenderResponseJSON(c echo.Context, code int, msg string, data interface{}) error
+	SenderResponseJSON(c echo.Context, code int, msg interface{}, data interface{}) error
 }
 
 type ToolsResponseImpl struct{}
@@ -15,7 +15,7 @@ func NewToolsReponse() ToolsResponse {
 	return &ToolsResponseImpl{}
 }
 
-func (st *ToolsResponseImpl) SenderResponseJSON(c echo.Context, code int, msg string, data interface{}) error {
+func (st *ToolsResponseImpl) SenderResponseJSON(c echo.Context, code int, msg interface{}, data interface{}) error {
 	res := entity.TemplateResponse{}
 	res.Status = code
 	res.Message = msg
